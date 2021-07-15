@@ -1,10 +1,6 @@
 # "Game Research and Development Club" website project
 A website developed to be used within the club. This club is a part of Chulalongkorn University's Faculty of Engineering.
 
-## Disclaimer
-This repository only contains the programming side of the entire project, and is protected under the GNU GLPv3 license.</br>
-[See the detail](LICENSE)
-
 ## General information
 Developed using HTML, CSS and JavaScript as base components
 - Front-end component
@@ -24,3 +20,7 @@ Developed using HTML, CSS and JavaScript as base components
   * etc.
 * Contacts
   * Social media platforms (Facebook, Discord, etc.) 
+
+## License & Copyright
+© Game Research and Development Club</br>
+Licensed under the [GNU GPLv3 License](LICENSE).
