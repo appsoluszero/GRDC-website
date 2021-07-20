@@ -1,10 +1,13 @@
 # "Game Research and Development Club" website project
 A website developed to be used within the club. This club is a part of Chulalongkorn University's Faculty of Engineering.
 
+## Running
+Clone this repository into your local machine then open the terminal in the cloned repository dictionary and type `yarn dev`
+
 ## General information
 Developed using HTML, CSS and JavaScript as base components
 - Front-end component
-  - **UNDERGOING DISCUSSION** 
+  - Next.js
 - Back-end component
   - **UNDERGOING DISCUSSION** 
 
