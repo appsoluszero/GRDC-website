@@ -1,7 +1,11 @@
-import '../styles/globals.css'
+import '../styles/globals.scss'
 import type { AppProps } from 'next/app'
+import GRCHeader from '../modules/header/GRCHeader'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return <>
+    <GRCHeader/>
+    <Component {...pageProps} />
+  </>
 }
 export default MyApp

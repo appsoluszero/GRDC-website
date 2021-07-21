@@ -1,3 +1,5 @@
+@import "/styles/variables.scss";
+
 .header {
   display: flex;
   align-items: center;
@@ -51,26 +53,37 @@
     cursor: pointer;
     width: 100px;
     height: 100px;
+
+    @media screen and (max-width: $small) {
+      display: none;
+    }
   }
 
-  nav ul {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    li {
-      padding: 0px 20px 3px 20px;
-      a {
-        transition: all 0.3s ease 0s;
-        display: block;
+  nav {
+    ul {
+      display: flex;
+      flex-direction: row;
 
-        font-size: 23px;
-        text-align: center;
-        font-family: "Noto Sans JP", sans-serif;
-        color: white;
-        text-decoration: none;
+      @media screen and (max-width: $small) {
+        padding-left: 0px;
+      }
 
-        &:hover {
-          color: #494949;
+      li {
+        list-style-type: none;
+        padding: 0px 20px 3px 20px;
+        a {
+          transition: all 0.3s ease 0s;
+          display: block;
+
+          font-size: Min(1.47em, 4vw);
+          text-align: center;
+          font-family: "Noto Sans JP", sans-serif;
+          color: white;
+          text-decoration: none;
+
+          &:hover {
+            color: #494949;
+          }
         }
       }
     }

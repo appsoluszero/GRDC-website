@@ -7,8 +7,6 @@ import styles from '../styles/Home.module.scss'
 export default function Home() {
   return (
     <div>
-      <GRCHeader />
-
       <div className={styles.motto_container}>
         {new Array(100).fill(0).map((_, i) => <div key={i}>
           <h1>{i + 1}. Game Research and Development Club</h1>
