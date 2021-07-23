@@ -10,9 +10,9 @@ export default function Home() {
     <div>
       <div style={{ textAlign: "center", marginTop: "25px" }}>
         <ImageWithFocus
-          image_data={thisPic}
-          normal_res={[960, 540]}
-          focus_res={[1280, 720]}
+          imageData={thisPic}
+          normalRes={[960, 540]}
+          focusRes={[1280, 720]}
         />
       </div>
 

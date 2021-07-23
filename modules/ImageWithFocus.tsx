@@ -1,11 +1,26 @@
 import Image from "next/image";
 import React from "react";
+import { useState, useMemo, useCallback } from "react";
 import styles from "./ImageWithFocus.module.scss";
 
-const GetImage = (props) => {
+export interface ImageWithFocusProps {
+  normalRes: [number, number];
+  focusRes: [number, number];
+  imageData: StaticImageData;
+}
+
+type ImageArgument = {
+  res: {
+    imageData: StaticImageData;
+    width: number;
+    height: number;
+  };
+};
+
+const GetImage = (props: ImageArgument) => {
   return (
     <Image
-      src={props.res.image_data}
+      src={props.res.imageData}
       alt="Test Pic Zoom"
       width={props.res.width}
       height={props.res.height}
@@ -13,51 +28,44 @@ const GetImage = (props) => {
   );
 };
 
-export default class ImageWithFocus extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      display: false,
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
+export default function ImageWithFocus(props: ImageWithFocusProps) {
+  const [displaying, setDisplaying] = useState(false);
 
-  handleClick() {
-    this.setState((prev) => ({
-      display: !prev.display,
-    }));
-  }
+  const handleClick = useCallback(() => {
+    setDisplaying((displaying) => !displaying);
+  }, [setDisplaying]);
 
-  render() {
-    const normal_res = this.props.normal_res;
-    const focus_res = this.props.focus_res;
-    const link = this.props.image_data;
-    const focus_elem = (
+  const { normalRes, focusRes, imageData: link } = props;
+
+  const focusElem = useMemo(
+    () => (
       <div className={styles.image_focus}>
-        <a href="#image-focus" onClick={this.handleClick}>
+        <a href="#image-focus" onClick={handleClick}>
           <GetImage
             res={{
-              image_data: link,
-              width: focus_res[0],
-              height: focus_res[1],
+              imageData: link,
+              width: focusRes[0],
+              height: focusRes[1],
             }}
           />
         </a>
       </div>
-    );
-    return (
-      <div>
-        <a href="#image-focus" onClick={this.handleClick}>
-          <GetImage
-            res={{
-              image_data: link,
-              width: normal_res[0],
-              height: normal_res[1],
-            }}
-          />
-        </a>
-        {this.state.display && focus_elem}
-      </div>
-    );
-  }
+    ),
+    [handleClick, link, focusRes]
+  );
+
+  return (
+    <div>
+      <a href="#image-focus" onClick={handleClick}>
+        <GetImage
+          res={{
+            imageData: link,
+            width: normalRes[0],
+            height: normalRes[1],
+          }}
+        />
+      </a>
+      {displaying && focusElem}
+    </div>
+  );
 }
