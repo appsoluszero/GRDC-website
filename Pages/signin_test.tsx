@@ -1,5 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/client";
 import React from "react";
+import useSWR, { mutate } from "swr";
+import { testDatabase } from "../common/constants/testDatabase";
 
 export default function SignInTest() {
   const [session, loading] = useSession();
@@ -8,8 +10,32 @@ export default function SignInTest() {
   const name = session?.user?.name;
   const email = session?.user?.email;
 
+  const { data, error, isValidating } = useSWR("/news");
+
   return (
     <div>
+      <div>
+        <span>isValidating: {JSON.stringify(isValidating)}</span>
+        <br />
+        {JSON.stringify(data)}
+        <br />
+        {error && (
+          <span>
+            <b>ERROR:</b>
+            {JSON.stringify(error)}
+          </span>
+        )}
+        <br />
+        <button
+          onClick={() => {
+            testDatabase["/post"].ok = false;
+            mutate("/post");
+          }}
+        >
+          ADD STUFF
+        </button>
+      </div>
+
       {session ? (
         <button onClick={() => signOut()}>SignOut</button>
       ) : (
