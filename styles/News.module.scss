@@ -1,21 +1,25 @@
 // I know this's ugly, it's tempory.
 
 .news {
-    border: 1px solid black;
-    border-radius: 8px;
-    margin: 16px 0 16px 0;
-    padding: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin: 16px 0 16px 0;
+  padding: 8px;
 
-    h3 {
-        font-family: "Noto Sans JP", sans-serif;
-    }
+  h3 {
+    font-family: "Noto Sans JP", sans-serif;
+  }
 }
 
 .news_form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 8px;
+
+  span {
+    color: darkred;
+  }
 }
