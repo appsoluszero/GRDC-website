@@ -21,18 +21,23 @@
   }
 
   div {
+
     h1 {
+      font-family: "Prompt", sans-serif;
       color: #dfe2e6;
       margin: 0;
       text-align: center;
       font-size: Min(2.5em, 8vw);
+      text-shadow: 2px 2px black;
     }
     h2 {
-      color: #4d6ca5;
+      font-family: "Noto Sans JP", sans-serif;
+      color: #4a79cf;
       margin: 0;
       text-align: center;
-      font-size: Min(1.5em, 5vw);
-      text-shadow: 2px 2px #335699;
+      font-size: Min(1.5em, 3vw);
+      /* text-shadow: 2px 2px #335699; */
+      text-shadow: 2px 2px black;
     }
   }
 }
