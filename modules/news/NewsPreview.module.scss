@@ -4,7 +4,10 @@
   margin: 16px 0 16px 0;
   padding: 8px;
 
-  h3 {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+
+  div h3 {
     font-family: "Noto Sans JP", sans-serif;
   }
 }

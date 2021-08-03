@@ -1,26 +1,48 @@
-import useSWR, { mutate } from "swr";
-import { testDatabase } from "../constants/testDatabase";
-import type { News } from "../types/news";
+import { News } from "../types/news";
+import { trpc } from "./trpc";
 
 export function useNews() {
-  const { data, error, isValidating } = useSWR<News[]>("/news");
-
-  return {
-    news: data,
-    error: error,
-    isLoading: isValidating,
-  };
+  return trpc.useQuery(["news.all"]);
 }
 
-export async function addNews(news: News) {
+export function useAddNews() {
+  /*
   mutate("/news", (x: News[]) => [...x, news], false);
 
-  // delay 1000 ms to simulate server delay
-  // user shouldn't feel the delay because of optimistic updating
-  await new Promise<void>((resolve) => {
-    setTimeout(() => resolve(), 1000);
+  fetch("/api/news.ts", {
+    method: "POST",
+    body: JSON.stringify(news),
   });
+  mutate("/news");*/
+  const client = trpc.useContext();
 
-  testDatabase["/news"].push(news);
-  mutate("/news");
+  return trpc.useMutation("news.post", {
+    onSuccess: () => {
+      client.invalidateQuery(["news.all"]);
+    },
+  });
+}
+
+export function useDeleteNews() {
+  const client = trpc.useContext();
+
+  return trpc.useMutation("news.delete", {
+    onMutate: async (id) => {
+      await client.cancelQuery(["news.all"]);
+
+      const newsList = client.getQueryData(["news.all"]) ?? [];
+      client.setQueryData(
+        ["news.all"],
+        newsList.filter((news) => news.id != id)
+      );
+
+      return { newsList };
+    },
+    onError: (err, id, ctx: { newsList: News[] }) => {
+      client.setQueryData(["news.all"], ctx.newsList);
+    },
+    onSuccess: () => {
+      client.invalidateQuery(["news.all"]);
+    },
+  });
 }

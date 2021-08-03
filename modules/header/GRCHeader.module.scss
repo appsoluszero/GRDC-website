@@ -21,7 +21,6 @@
   }
 
   div {
-
     h1 {
       font-family: "Prompt", sans-serif;
       color: #dfe2e6;
@@ -66,9 +65,14 @@
   }
 
   nav {
+    @media screen and (max-width: $small) {
+      margin: auto;
+    }
+
     ul {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
 
       @media screen and (max-width: $small) {
         padding-left: 0px;
@@ -76,7 +80,7 @@
 
       li {
         list-style-type: none;
-        padding: 0px 20px 3px 20px;
+        padding: 0px Min(20px, 2vw) 3px Min(20px, 2vw);
         a {
           transition: all 0.3s ease 0s;
           display: block;

@@ -1,8 +1,8 @@
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { addNews } from "../../common/hooks/news";
-import { News as NewsType, newsSchema } from "../../common/types/news";
+import { useAddNews } from "../../common/hooks/news";
+import { News as NewsType, newsUploadSchema } from "../../common/types/news";
 import ReactMarkdown from "react-markdown";
 import styles from "./NewsAddForm.module.scss";
 import NewsPreview from "./NewsPreview";
@@ -15,14 +15,16 @@ export default function NewsAddForm() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(newsSchema),
+    resolver: zodResolver(newsUploadSchema),
   });
+
+  const { mutateAsync: addNews, isLoading } = useAddNews();
 
   return (
     <form
       className={styles.news_form}
-      onSubmit={handleSubmit((news: NewsType) => {
-        addNews(news);
+      onSubmit={handleSubmit(async (news: NewsType) => {
+        await addNews(news);
         reset();
       })}
     >
@@ -41,7 +43,7 @@ export default function NewsAddForm() {
           content: watch("content"),
         }}
       />
-      <input type="submit" />
+      <input type="submit" disabled={isLoading} />
     </form>
   );
 }

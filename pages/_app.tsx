@@ -2,17 +2,41 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import GRCHeader from "../modules/header/GRCHeader";
 import { Provider } from "next-auth/client";
-import { SWRConfig } from "swr";
-import { swrConfig } from "../common/constants/swrConfig";
+import { withTRPC } from "@trpc/next";
+import { AppRouter } from "./api/trpc/[trpc]";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SWRConfig value={swrConfig}>
-      <Provider session={pageProps.session}>
-        <GRCHeader />
-        <Component {...pageProps} />
-      </Provider>
-    </SWRConfig>
+    <Provider session={pageProps.session}>
+      <GRCHeader />
+      <Component {...pageProps} />
+    </Provider>
   );
 }
-export default MyApp;
+
+export default withTRPC<AppRouter>({
+  config({ ctx }) {
+    // during SSR rendering
+    if (typeof window === "undefined") {
+      return {
+        url: "/api/trpc",
+      };
+    }
+
+    const url = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}/api/trpc`
+      : "http://localhost:3000/api/trpc";
+
+    return {
+      url,
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      },
+    };
+  },
+  ssr: true,
+})(MyApp);
