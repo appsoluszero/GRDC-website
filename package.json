@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "prisma-generate": "yarn prisma generate",
+    "prisma-sync": "yarn prisma generate && yarn prisma db push",
+    "prisma-studio": "yarn prisma studio",
     "start": "next start",
     "lint": "next lint"
   },
