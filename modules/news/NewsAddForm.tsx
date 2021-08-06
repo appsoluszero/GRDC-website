@@ -2,7 +2,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAddNews } from "../../common/hooks/news";
-import { News as NewsType, newsUploadSchema } from "../../common/types/news";
+import { News as NewsType, newsToUploadSchema } from "../../common/types/news";
 import ReactMarkdown from "react-markdown";
 import styles from "./NewsAddForm.module.scss";
 import NewsPreview from "./NewsPreview";
@@ -15,7 +15,7 @@ export default function NewsAddForm() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(newsUploadSchema),
+    resolver: zodResolver(newsToUploadSchema),
   });
 
   const { mutateAsync: addNews, isLoading } = useAddNews();

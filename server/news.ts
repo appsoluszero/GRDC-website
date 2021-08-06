@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { newsUploadSchema } from "../common/types/news";
+import { newsToUploadSchema, newsSchema } from "../common/types/news";
 import { createRouter } from "../pages/api/trpc/[trpc]";
 
 export default createRouter()
@@ -9,7 +9,7 @@ export default createRouter()
     },
   })
   .mutation("post", {
-    input: newsUploadSchema,
+    input: newsToUploadSchema,
     async resolve({ ctx, input: news }) {
       await ctx.prisma.news.create({
         data: news,
@@ -17,7 +17,7 @@ export default createRouter()
     },
   })
   .mutation("delete", {
-    input: z.string(),
+    input: newsSchema.shape.id,
     async resolve({ ctx, input: id }) {
       await ctx.prisma.news.delete({
         where: {
