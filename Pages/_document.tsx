@@ -6,11 +6,11 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Roboto"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Roboto&display=optional"
             rel="stylesheet"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Prompt&family=Roboto"
+            href="https://fonts.googleapis.com/css2?family=Prompt&family=Roboto&display=optional"
             rel="stylesheet"
           />
         </Head>
