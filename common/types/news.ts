@@ -3,7 +3,7 @@ import { z } from "zod";
 import { assert, IsExact } from "conditional-type-checks";
 
 export const newsSchema = z.object({
-  id: z.number().positive(),
+  id: z.number().int().positive(),
   title: z.string().min(1),
   content: z.string().min(1),
 });
