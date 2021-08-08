@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/client";
 import React from "react";
 import { trpc } from "../common/hooks/trpc";
+import Image from "next/image";
 
 export default function SignInTest() {
   const [session, loading] = useSession();
@@ -38,7 +39,9 @@ export default function SignInTest() {
         </>
       )}
 
-      {imageSrc && <img src={imageSrc} />}
+      {imageSrc && (
+        <Image src={imageSrc} width={500} height={500} alt="Profile Image" />
+      )}
       <br />
       {name && <span>{name}</span>}
       {email && <i> ({email})</i>}
