@@ -4,10 +4,17 @@ import GRCHeader from "../modules/header/GRCHeader";
 import { Provider } from "next-auth/client";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "./api/trpc/[trpc]";
+import { sessionSetting } from "../common/constants/session_setting";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider session={pageProps.session}>
+    <Provider
+      session={pageProps.session}
+      options={{
+        clientMaxAge: sessionSetting.clientMaxAge,
+        keepAlive: sessionSetting.keepAlive,
+      }}
+    >
       <GRCHeader />
       <Component {...pageProps} />
     </Provider>

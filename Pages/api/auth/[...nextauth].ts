@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 import { prisma } from "../trpc/[trpc]";
 import { Chance } from "chance";
+import { sessionSetting } from "../../../common/constants/session_setting";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -13,6 +14,9 @@ export default NextAuth({
     // ...add more providers here
   ],
   secret: process.env.SECRET,
+  session: {
+    maxAge: sessionSetting.maxAge,
+  },
   callbacks: {
     async signIn(user, account, profile) {
       const id = account.id;
@@ -40,19 +44,23 @@ export default NextAuth({
       return true;
     },
     async jwt(token, user, account, profile, isNewUser) {
-      if (user && account) {
+      // Data Syncing (after login stage)
+      if (token.userId) {
         console.log("Database fetch");
         const info = await prisma.userInfo.findUnique({
           where: {
-            userId: account.id,
+            userId: token.userId,
           },
         });
 
         token.role = info?.role ?? 0;
       }
-      if (account?.accessToken) {
+
+      // Inital Account Setting (login stage)
+      if (account) {
         token.userId = account.id;
       }
+
       return token;
     },
     async session(session, token) {
