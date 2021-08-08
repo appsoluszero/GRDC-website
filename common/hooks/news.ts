@@ -38,8 +38,9 @@ export function useDeleteNews() {
 
       return { newsList };
     },
-    onError: (err, id, ctx: { newsList: News[] }) => {
-      client.setQueryData(["news.all"], ctx.newsList);
+    onError: (err, id, ctx) => {
+      const oldNewsList = (ctx as { newsList: News[] }).newsList;
+      client.setQueryData(["news.all"], oldNewsList);
     },
     onSuccess: () => {
       client.invalidateQuery(["news.all"]);
