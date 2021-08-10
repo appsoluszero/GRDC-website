@@ -5,9 +5,28 @@
   padding: 8px;
 
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr max-content;
 
   div h3 {
     font-family: "Noto Sans JP", sans-serif;
+  }
+
+  .content {
+    background: linear-gradient(
+      to bottom,
+      black 0%,
+      black 70%,
+      transparent 100%
+    );
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+
+    background-clip: text;
+    line-height: 1.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: transparent;
   }
 }

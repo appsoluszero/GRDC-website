@@ -1,18 +1,20 @@
 import React from "react";
-import { News as NewsType } from "../common/types/news";
 import NewsAddForm from "../modules/news/NewsAddForm";
-import { useNews } from "../common/hooks/news";
 import NewsPreview from "../modules/news/NewsPreview";
+import { trpc } from "../common/hooks/trpc";
 
-export default function News() {
-  const { data: news } = useNews();
+function News() {
+  const { data: news } = trpc.useQuery(["news.all"], { ssr: true });
+
   return (
     <div>
-      {news?.map((news: NewsType, i) => (
-        <NewsPreview key={i} news={news} />
+      {news?.map((news) => (
+        <NewsPreview news={news} key={news.id} />
       ))}
 
       <NewsAddForm />
     </div>
   );
 }
+
+export default News;

@@ -21,6 +21,7 @@
     "@trpc/server": "^9.0.0-alpha.0",
     "chance": "^1.1.7",
     "conditional-type-checks": "^1.0.5",
+    "dayjs": "^1.10.6",
     "next": "11.0.1",
     "next-auth": "^3.27.3",
     "react": "17.0.2",
@@ -30,6 +31,8 @@
     "react-markdown": "^6.0.2",
     "react-query": "^3.19.1",
     "sass": "^1.35.2",
+    "superjson": "^1.7.5",
+    "ts-xor": "^1.0.8",
     "zod": "^3.7.1"
   },
   "devDependencies": {

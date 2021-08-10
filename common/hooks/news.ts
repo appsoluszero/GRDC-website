@@ -1,10 +1,6 @@
 import { News } from "../types/news";
 import { trpc } from "./trpc";
 
-export function useNews() {
-  return trpc.useQuery(["news.all"]);
-}
-
 export function useAddNews() {
   /*
   mutate("/news", (x: News[]) => [...x, news], false);

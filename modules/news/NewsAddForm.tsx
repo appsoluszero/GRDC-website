@@ -6,6 +6,7 @@ import { News as NewsType, newsToUploadSchema } from "../../common/types/news";
 import ReactMarkdown from "react-markdown";
 import styles from "./NewsAddForm.module.scss";
 import NewsPreview from "./NewsPreview";
+import { signIn, useSession } from "next-auth/client";
 
 export default function NewsAddForm() {
   const {
@@ -19,6 +20,19 @@ export default function NewsAddForm() {
   });
 
   const { mutateAsync: addNews, isLoading } = useAddNews();
+  const [session] = useSession();
+
+  if (!session) {
+    return (
+      <h1>
+        <button onClick={() => signIn()}>Signin</button> to add more news
+      </h1>
+    );
+  }
+
+  if (!session.isAdmin) {
+    return <h1>Unauthorized</h1>;
+  }
 
   return (
     <form
