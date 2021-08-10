@@ -9,6 +9,7 @@ import styles from "./NewsPreview.module.scss";
 
 type NewsPreviewProps = {
   news: News | NewsToUpload;
+  compact?: boolean;
 };
 
 export default function NewsPreview(props: NewsPreviewProps) {
@@ -36,7 +37,7 @@ export default function NewsPreview(props: NewsPreviewProps) {
           titleElem
         )}
 
-        {content && (
+        {!props.compact && (
           <ReactMarkdown className={styles.content}>{content}</ReactMarkdown>
         )}
       </div>
