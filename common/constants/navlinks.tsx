@@ -12,7 +12,7 @@ export const navLinks: (
   | ((session: Session | null) => NavLink | null)
 )[] = [
   { name: "Home", href: "/" },
-  { name: "Showcase" },
+  { name: "Showcase", href: "/showcase" },
   { name: "News", href: "/news" },
   { name: "Contact" },
   (session) =>

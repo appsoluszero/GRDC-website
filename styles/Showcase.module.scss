@@ -1,0 +1,87 @@
+@import "/styles/variables.scss";
+
+.page {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr minmax(0px, 70%) 1fr;
+
+  @media screen and (max-width: $small) {
+    grid-template-columns: 0 1fr 0;
+  }
+
+  > * {
+    grid-column: 2 / 3;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  @media screen and (min-width: $large) {
+    flex-wrap: nowrap;
+  }
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 16px;
+  border: 2px black solid;
+  box-shadow: 5px 10px transparentize($color: #000000, $amount: 0.75);
+
+  overflow: hidden;
+  word-wrap: break-word;
+
+  .information {
+    flex-grow: 1;
+    font-size: Min(1.5rem, 3vw);
+
+    p {
+      position: relative;
+      font-size: Clamp(1.1rem, 1em, 1.4rem);
+      max-width: 50ch;
+      bottom: 0;
+
+      text-align: left;
+      margin-left: 16px;
+
+      background: linear-gradient(
+        to bottom,
+        black 0%,
+        black 70%,
+        transparent 100%
+      );
+
+      background-clip: text;
+      line-height: 1.4em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: transparent;
+    }
+  }
+}
+
+.tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  > span {
+    border-radius: 16px;
+    padding: 8px;
+
+    font-size: Clamp(0.8rem, 1.1em, 1.3rem);
+    font-weight: bold;
+    color: rgb(217, 217, 217);
+    background-color: rgb(77, 77, 77);
+  }
+}

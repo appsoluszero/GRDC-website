@@ -7,6 +7,7 @@ import * as trpcNext from "@trpc/server/adapters/next";
 import news from "../../../server/news";
 import test from "../../../server/test";
 import user from "../../../server/user";
+import game from "../../../server/game";
 
 // Prevent multiple instances of Prisma Client in development
 declare global {
@@ -20,7 +21,8 @@ export const appRouter = createRouter()
   .transformer(superjson)
   .merge("news.", news)
   .merge("user.", user)
-  .merge("test.", test);
+  .merge("test.", test)
+  .merge("game.", game);
 
 // trpc setup
 async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
