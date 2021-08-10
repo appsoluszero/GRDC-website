@@ -1,0 +1,41 @@
+@import "/styles/variables.scss";
+
+.navlink {
+  @media screen and (max-width: $small) {
+    margin: auto;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: $small) {
+      padding-left: 0px;
+    }
+
+    li {
+      list-style-type: none;
+      padding: 0px Min(20px, 2vw) 3px Min(20px, 2vw);
+      button,
+      a {
+        transition: all 0.3s ease 0s;
+        display: block;
+
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+
+        font-size: Min(1.47em, 4vw);
+        text-align: center;
+        font-family: "Noto Sans JP", sans-serif;
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+          color: #494949;
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./GRCHeader.module.scss";
 import logo from "../../public/logo.png";
 import Link from "next/link";
-import { navLinks } from "../../common/constants/navlinks";
+import { GRCNavLink } from "./GRCNavLink";
 
 export default function GRCHeader() {
   return (
@@ -23,19 +23,11 @@ export default function GRCHeader() {
       </header>
       <header className={styles.header_nav}>
         <Link href="/">
-          <img id="top-header_logo" src={logo.src} alt="Club Logo" />
+          <a>
+            <img id="top-header_logo" src={logo.src} alt="Club Logo" />
+          </a>
         </Link>
-        <nav>
-          <ul>
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <Link href={link.href ?? "#"}>
-                  <a>{link.name}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <GRCNavLink />
       </header>
     </>
   );
