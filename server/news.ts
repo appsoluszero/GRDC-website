@@ -1,8 +1,18 @@
-import { z } from "zod";
 import { newsToUploadSchema, newsSchema } from "../common/types/news";
+import { adminGuard } from "../common/utils/api_guard";
 import { createRouter } from "../pages/api/trpc/[trpc]";
 
 export default createRouter()
+  .query("content", {
+    input: newsSchema.shape.id,
+    async resolve({ input, ctx }) {
+      return await ctx.prisma.news.findUnique({
+        where: {
+          id: input,
+        },
+      });
+    },
+  })
   .query("all", {
     async resolve({ ctx }) {
       return await ctx.prisma.news
@@ -12,10 +22,15 @@ export default createRouter()
   })
   .mutation("post", {
     input: newsToUploadSchema,
-    async resolve({ ctx, input: news }) {
+    async resolve({ input: news, ctx }) {
+      const token = adminGuard(ctx.token);
+
       await ctx.prisma.news
         .create({
-          data: news,
+          data: {
+            authorId: token.userId,
+            ...news,
+          },
         })
         .catch((err) => console.error(err));
     },
@@ -23,6 +38,8 @@ export default createRouter()
   .mutation("delete", {
     input: newsSchema.shape.id,
     async resolve({ ctx, input: id }) {
+      const token = adminGuard(ctx.token);
+
       await ctx.prisma.news
         .delete({
           where: {

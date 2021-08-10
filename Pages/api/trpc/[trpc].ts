@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { getToken } from "next-auth/jwt";
+import superjson from "superjson";
 import * as trpc from "@trpc/server";
 import { inferAsyncReturnType } from "@trpc/server";
 import * as trpcNext from "@trpc/server/adapters/next";
 import news from "../../../server/news";
-import jwt from "next-auth/jwt";
-import { getSession } from "next-auth/client";
+import test from "../../../server/test";
+import user from "../../../server/user";
 
 // Prevent multiple instances of Prisma Client in development
 declare global {
@@ -14,24 +16,17 @@ export const prisma = global.prisma || new PrismaClient();
 if (process.env.NODE_ENV === "development") global.prisma = prisma;
 
 // main router
-const appRouter = createRouter()
+export const appRouter = createRouter()
+  .transformer(superjson)
   .merge("news.", news)
-  .query("test", {
-    async resolve({ ctx }) {
-      // Returning jwt to client is a very very BAD idea of security
-      // Do remove this api route if it somehow slip to production
-      return {
-        session: await getSession({ req: ctx.req }),
-        jwt: await jwt.getToken({ req: ctx.req, secret: process.env.SECRET }),
-      };
-    },
-  });
+  .merge("user.", user)
+  .merge("test.", test);
 
 // trpc setup
-function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
+async function createContext({ req, res }: trpcNext.CreateNextContextOptions) {
   return {
     prisma,
-    req,
+    token: await getToken({ req, secret: process.env.SECRET }),
   };
 }
 

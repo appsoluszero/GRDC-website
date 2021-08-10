@@ -23,7 +23,7 @@ export default NextAuth({
 
       try {
         // Create user if not exist
-        await prisma.userInfo.upsert({
+        await prisma.user.upsert({
           where: {
             userId: id,
           },
@@ -32,7 +32,6 @@ export default NextAuth({
             userId: id,
             username: user.name ?? profile.name ?? Chance().name(),
             email: user.email,
-            role: 0,
           },
           update: {},
         });
@@ -47,13 +46,13 @@ export default NextAuth({
       // Data Syncing (after login stage)
       if (token.userId) {
         console.log("Database fetch");
-        const info = await prisma.userInfo.findUnique({
+        const info = await prisma.user.findUnique({
           where: {
             userId: token.userId,
           },
         });
 
-        token.role = info?.role ?? 0;
+        token.isAdmin = info?.isAdmin ?? false;
       }
 
       // Inital Account Setting (login stage)
@@ -64,8 +63,12 @@ export default NextAuth({
       return token;
     },
     async session(session, token) {
-      if (typeof token.role == "number") {
-        session.role = token.role;
+      if (
+        typeof token.isAdmin == "boolean" &&
+        typeof token.userId === "string"
+      ) {
+        session.isAdmin = token.isAdmin;
+        session.userId = token.userId;
       }
       return session;
     },

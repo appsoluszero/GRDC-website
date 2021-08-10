@@ -1,23 +1,17 @@
-import { signIn, signOut, useSession } from "next-auth/client";
+import { getSession, signIn, signOut, useSession } from "next-auth/client";
 import React from "react";
 import { trpc } from "../common/hooks/trpc";
 import Image from "next/image";
+import { useRouter } from "next/dist/client/router";
 
 export default function SignInTest() {
+  const router = useRouter();
   const [session, loading] = useSession();
-  const { data, refetch } = trpc.useQuery(["test"]);
-
-  const imageSrc = session?.user?.image;
-  const name = session?.user?.name;
-  const email = session?.user?.email;
+  const { mutateAsync: setAdmin, isLoading } =
+    trpc.useMutation("test.set_admin");
 
   return (
     <div>
-      <code style={{ whiteSpace: "pre" }}>{JSON.stringify(data, null, 2)}</code>
-      <br />
-      <button onClick={() => refetch()}>Refetch</button>
-      <br />
-
       {session ? (
         <button onClick={() => signOut()}>SignOut</button>
       ) : (
@@ -36,15 +30,31 @@ export default function SignInTest() {
             {JSON.stringify(session, null, 2)}
           </code>
           <br />
+          {session.user?.image && (
+            <Image
+              src={session.user?.image}
+              width={100}
+              height={100}
+              alt="Profile Image"
+            />
+          )}
+
+          <h3>Debug</h3>
+          <button
+            onClick={async () => {
+              setAdmin(!session.isAdmin);
+              router.reload();
+            }}
+            disabled={isLoading}
+          >
+            {session.isAdmin ? "Unset Admin" : "Set Admin"}
+          </button>
         </>
       )}
 
-      {imageSrc && (
-        <Image src={imageSrc} width={500} height={500} alt="Profile Image" />
-      )}
+      <h3>Control</h3>
+
       <br />
-      {name && <span>{name}</span>}
-      {email && <i> ({email})</i>}
     </div>
   );
 }

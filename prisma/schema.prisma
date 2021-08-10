@@ -11,14 +11,20 @@ generator client {
 }
 
 model News {
-  id      Int    @id @default(autoincrement())
-  title   String
-  content String
+  id           Int      @id @default(autoincrement())
+  title        String
+  content      String
+  createTime   DateTime @default(now())
+  lastEditTime DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [userId])
 }
 
-model UserInfo {
+model User {
   userId   String  @id
   username String
   email    String?
-  role     Int     @default(0)
+  isAdmin  Boolean @default(false)
+  News     News[]
 }
