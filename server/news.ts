@@ -1,6 +1,6 @@
 import { newsToUploadSchema, newsSchema } from "../common/types/news";
 import { adminGuard } from "../common/utils/api_guard";
-import { createRouter } from "../Pages/api/trpc/[trpc]";
+import { createRouter } from "../pages/api/trpc/[trpc]";
 
 export default createRouter()
   .query("content", {

@@ -10,13 +10,13 @@ export interface AdminGuardProps {
 }
 
 export default function AdminGuard(props: AdminGuardProps) {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
 
   if (props.ssr && typeof window === "undefined") {
     return props.children;
   }
 
-  if (loading) {
+  if (status == "loading") {
     return props.loadingElement ?? <text>Loading...</text>;
   }
 

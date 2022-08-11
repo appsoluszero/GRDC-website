@@ -2,7 +2,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useAddNews } from "../../common/hooks/news";
-import { News as NewsType, newsToUploadSchema } from "../../common/types/news";
+import { News as NewsType, NewsToUpload, newsToUploadSchema } from "../../common/types/news";
 import ReactMarkdown from "react-markdown";
 import styles from "./NewsAddForm.module.scss";
 import NewsPreview from "./NewsPreview";
@@ -15,12 +15,12 @@ export default function NewsAddForm() {
     reset,
     watch,
     formState: { errors },
-  } = useForm({
+  } = useForm<NewsToUpload>({
     resolver: zodResolver(newsToUploadSchema),
   });
 
   const { mutateAsync: addNews, isLoading } = useAddNews();
-  const [session] = useSession();
+  const { data: session, status } = useSession();
 
   if (!session) {
     return (
@@ -31,13 +31,15 @@ export default function NewsAddForm() {
   }
 
   if (!session.isAdmin) {
-    return <h1>Unauthorized</h1>;
+    return <div>
+      <h1>Unauthorized</h1>
+    </div>;
   }
 
   return (
     <form
       className={styles.news_form}
-      onSubmit={handleSubmit(async (news: NewsType) => {
+      onSubmit={handleSubmit(async (news: NewsToUpload) => {
         await addNews(news);
         reset();
       })}

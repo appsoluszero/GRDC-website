@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "../trpc/[trpc]";
 import { Chance } from "chance";
 import { sessionSetting } from "../../../common/constants/session_setting";
@@ -7,9 +7,12 @@ import { sessionSetting } from "../../../common/constants/session_setting";
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
-    Providers.Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    GoogleProvider({
+      clientId: "718673669442-l85nvqb53bqsl7dpg07a73hg0grvhvev.apps.googleusercontent.com",
+      clientSecret: "l8UHQ0QGkngcIaGWc9JOk5_l"
+
+      // clientId: process.env.GOOGLE_CLIENT_ID,
+      // clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     // ...add more providers here
   ],
@@ -18,8 +21,8 @@ export default NextAuth({
     maxAge: sessionSetting.maxAge,
   },
   callbacks: {
-    async signIn(user, account, profile) {
-      const id = account.id;
+    async signIn({ user, account, profile }) {
+      const id = user.id;
 
       try {
         // Create user if not exist
@@ -36,40 +39,45 @@ export default NextAuth({
           update: {},
         });
       } catch (error) {
+        console.error("Error when login and updaing database")
+        console.error(`id = ${id}`)
         console.error(error);
         return false;
       }
 
       return true;
     },
-    async jwt(token, user, account, profile, isNewUser) {
+    async jwt({ token, user, account, profile, isNewUser }) {
+      console.log("JWT")
+
       // Data Syncing (after login stage)
-      if (token.userId) {
+      if (user !== undefined) {
         console.log("Database fetch");
         const info = await prisma.user.findUnique({
           where: {
-            userId: token.userId,
+            userId: user.id,
           },
         });
 
         token.isAdmin = info?.isAdmin ?? false;
+        token.userId = user.id;
       }
 
-      // Inital Account Setting (login stage)
-      if (account) {
-        token.userId = account.id;
-      }
-
+      console.log(token)
       return token;
     },
-    async session(session, token) {
-      if (
-        typeof token.isAdmin == "boolean" &&
-        typeof token.userId === "string"
-      ) {
+    // session callback, called whenever a session is checked
+    async session({ session, token, user }) {
+
+
+      // Add required field to session
+      if (typeof token.isAdmin == "boolean") {
         session.isAdmin = token.isAdmin;
+      }
+      if (typeof token.userId === "string") {
         session.userId = token.userId;
       }
+
       return session;
     },
   },

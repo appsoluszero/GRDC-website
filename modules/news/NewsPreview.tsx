@@ -18,7 +18,7 @@ export default function NewsPreview(props: NewsPreviewProps) {
   const id = "id" in props.news ? props.news.id : null;
 
   const { mutateAsync: deleteNews } = useDeleteNews();
-  const [session, loading] = useSession();
+  const { data: session } = useSession();
 
   const titleElem = (
     <b>

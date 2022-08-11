@@ -3,14 +3,14 @@ import { useRouter } from "next/dist/client/router";
 import { trpc } from "../../common/hooks/trpc";
 
 export default function UserTable() {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const { data: users, error, refetch } = trpc.useQuery(["user.all"]);
   const setAdmin = trpc.useMutation("user.set_admin");
 
   const router = useRouter();
 
   if (error) {
-    return <span>{error}</span>;
+    return <span>{error.message}</span>;
   }
 
   if (!users) {

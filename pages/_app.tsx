@@ -4,7 +4,7 @@ import superjson from "superjson";
 import GRCHeader from "../modules/header/GRCHeader";
 import { SessionProvider } from "next-auth/react";
 import { withTRPC } from "@trpc/next";
-import { AppRouter } from "../Pages/api/trpc/[trpc]";
+import { AppRouter } from "./api/trpc/[trpc]";
 import { sessionSetting } from "../common/constants/session_setting";
 
 import relativeTime from "dayjs/plugin/relativeTime";
