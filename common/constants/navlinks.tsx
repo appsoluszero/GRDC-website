@@ -1,5 +1,5 @@
 import type { Session } from "next-auth";
-import { signIn, signOut } from "next-auth/client";
+import { signIn, signOut } from "next-auth/react";
 import { XOR } from "ts-xor";
 
 type NavLink = { name: string; element?: JSX.Element } & XOR<
@@ -11,16 +11,16 @@ export const navLinks: (
   | NavLink
   | ((session: Session | null) => NavLink | null)
 )[] = [
-  { name: "Home", href: "/" },
-  { name: "Showcase", href: "/showcase" },
-  { name: "News", href: "/news" },
-  { name: "Contact" },
-  (session) =>
-    session
-      ? {
+    { name: "Home", href: "/" },
+    { name: "Showcase", href: "/showcase" },
+    { name: "News", href: "/news" },
+    { name: "Contact" },
+    (session) =>
+      session
+        ? {
           name: "Signout",
           action: () => confirm("Confirm Signout?") && signOut(),
         }
-      : { name: "SignIn", action: () => signIn("google") },
-  (session) => session?.isAdmin && { name: "Admin", href: "/admin" },
-];
+        : { name: "SignIn", action: () => signIn("google") },
+    (session) => session?.isAdmin && { name: "Admin", href: "/admin" },
+  ];

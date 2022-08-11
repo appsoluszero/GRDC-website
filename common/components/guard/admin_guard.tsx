@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/client";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 

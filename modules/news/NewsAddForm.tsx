@@ -6,7 +6,7 @@ import { News as NewsType, newsToUploadSchema } from "../../common/types/news";
 import ReactMarkdown from "react-markdown";
 import styles from "./NewsAddForm.module.scss";
 import NewsPreview from "./NewsPreview";
-import { signIn, useSession } from "next-auth/client";
+import { signIn, useSession } from "next-auth/react";
 
 export default function NewsAddForm() {
   const {

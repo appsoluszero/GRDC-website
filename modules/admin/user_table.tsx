@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { trpc } from "../../common/hooks/trpc";
 

@@ -1,4 +1,4 @@
-import { getSession, signIn, signOut, useSession } from "next-auth/client";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import { trpc } from "../common/hooks/trpc";
 import Image from "next/image";

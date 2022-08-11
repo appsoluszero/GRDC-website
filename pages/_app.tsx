@@ -2,9 +2,9 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import superjson from "superjson";
 import GRCHeader from "../modules/header/GRCHeader";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { withTRPC } from "@trpc/next";
-import { AppRouter } from "./api/trpc/[trpc]";
+import { AppRouter } from "../Pages/api/trpc/[trpc]";
 import { sessionSetting } from "../common/constants/session_setting";
 
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -15,16 +15,13 @@ dayjs.extend(calendar);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider
+    <SessionProvider
       session={pageProps.session}
-      options={{
-        clientMaxAge: sessionSetting.clientMaxAge,
-        keepAlive: sessionSetting.keepAlive,
-      }}
+      refetchInterval={sessionSetting.refetchInterval}
     >
       <GRCHeader />
       <Component {...pageProps} />
-    </Provider>
+    </SessionProvider>
   );
 }
 

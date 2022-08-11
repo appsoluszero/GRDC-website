@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { navLinks } from "../../common/constants/navlinks";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import styles from "./GRCNavLink.module.scss";
 
 export function GRCNavLink() {
-  const [session] = useSession();
+  const session = useSession();
 
   return (
     <nav className={styles.navlink}>
@@ -15,7 +15,7 @@ export function GRCNavLink() {
             // map to link() if link is a function, but get filtered out if link() return null
             // if link is object then it's mapped to link
             if (typeof link === "function") {
-              const _link = link(session);
+              const _link = link(session.data);
               return _link ? [_link] : [];
             }
             return [link];
@@ -23,7 +23,7 @@ export function GRCNavLink() {
           .map((link) => {
             if (link.action) {
               return (
-                <li>
+                <li key={link.name}>
                   {link.element || (
                     <button onClick={link.action}>{link.name}</button>
                   )}
